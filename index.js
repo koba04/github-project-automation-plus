@@ -33,6 +33,7 @@ const getData = () => {
 	try {
 		const {eventName, action, nodeId, login, url} = getData();
 
+    console.log("Start");
 		if (user && user !== login) {
 			return;
 		}
@@ -88,7 +89,9 @@ const getData = () => {
 		const orgProjects = (resource.repository.owner &&
 			resource.repository.owner.projects &&
 			resource.repository.owner.projects.nodes) ||
-			[];
+      [];
+
+    console.log(repoProjects, orgProjects);
 
 		// Search the projects for columns with a name that matches
 		const columns = [...repoProjects, ...orgProjects]
