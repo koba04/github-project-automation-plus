@@ -4,7 +4,7 @@ const github = require('@actions/github');
 const token = core.getInput('repo-token');
 const project = core.getInput('project');
 const column = core.getInput('column');
-const users = core.getInput('users');
+const user = core.getInput('user');
 
 const octokit = new github.GitHub(token);
 
@@ -33,7 +33,7 @@ const getData = () => {
 	try {
 		const {eventName, action, nodeId, login, url} = getData();
 
-		if (users && !users.includes(login)) {
+		if (user && user !== login) {
 			return;
 		}
 
