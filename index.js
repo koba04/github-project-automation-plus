@@ -4,6 +4,7 @@ const github = require('@actions/github');
 const token = core.getInput('repo-token');
 const project = core.getInput('project');
 const column = core.getInput('column');
+const users = core.getInput('users');
 
 const octokit = new github.GitHub(token);
 
@@ -13,6 +14,8 @@ const getData = () => {
 		throw new Error(`Only pull requests or issues allowed, received:\n${eventName}`);
 	}
 
+	console.log(payload);
+
 	const githubData = eventName === 'issues' ?
 		payload.issue :
 		payload.pull_request;
@@ -21,13 +24,18 @@ const getData = () => {
 		eventName,
 		action: payload.action,
 		nodeId: githubData.node_id,
+		login: payload.assignee ? payload.assignee.login : null,
 		url: githubData.html_url
 	};
 };
 
 (async () => {
 	try {
-		const {eventName, action, nodeId, url} = getData();
+		const {eventName, action, nodeId, login, url} = getData();
+
+		if (users && !users.includes(login)) {
+			return;
+		}
 
 		// Get the column ID  from searching for the project and card Id if it exists
 		const fetchColumnQuery = `query {

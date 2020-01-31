@@ -56,6 +56,9 @@ jobs:
           project: Backlog
           column: To do
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          users:
+            - UserA
+            - UserB
 ```
 
 ## Workflow options
